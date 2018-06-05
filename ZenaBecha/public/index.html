@@ -1,0 +1,80 @@
+<html>
+    <head>  
+        <title>Zena becha</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <h2>Zena Becha</h2>
+            </div>
+            <div class="row">
+                <h3>Domestic News</h3>
+                <hr>
+                <div>
+                    <ul id="domesticNews" class="list-unstyled">
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <h3>Foreign News</h3>
+                <hr>
+                <div>
+                    <ul id= "foreignNews" class="list-unstyled"></ul>
+                </div>
+            </div>
+        </div>
+        <script>
+            var domesticNews = document.getElementById("domesticNews");
+            function getDomesticNews(){
+                let httpRequest = new XMLHttpRequest();
+                httpRequest.open('GET','/getDomesticNews', true);
+                httpRequest.send();
+                httpRequest.onreadystatechange = function(){
+                    if(httpRequest.readyState == XMLHttpRequest.DONE){
+                        if(httpRequest.status == 200){
+                            var response = JSON.parse(httpRequest.responseText);
+                            var text = "";
+                            console.log(response);
+                            for(let i = 0; i < response.length; i++){
+                                text += "<li>"
+                                text += "<h4>"+response[i].title+"</h4>";
+                                text += "<p>"+response[i].summary+"</p>";
+                                text += "</li>";
+                            }
+                            domesticNews.innerHTML = text;
+                        }
+                    }
+                }
+            }
+
+            getDomesticNews();
+            function getForeignNews(){
+                let httpRequest = new XMLHttpRequest();
+                httpRequest.open('GET','/getForeignNews', true);
+                httpRequest.send();
+                httpRequest.onreadystatechange = function(){
+                    if(httpRequest.readyState == XMLHttpRequest.DONE){
+                        if(httpRequest.status == 200){
+                            var response = JSON.parse(httpRequest.responseText);
+                            var text = "";
+                            console.log(response);
+                            for(let i = 0; i < response.length; i++){
+                                text += "<li>"
+                                text += "<h4>"+response[i].title+"</h4>";
+                                text += "<p>"+response[i].summary+"</p>";
+                                text += "</li>";
+                            }
+                            foreignNews.innerHTML = text;
+                        }
+                    }
+                }
+            }
+
+            getForeignNews();
+            getDomesticNews();
+        </script>
+        <script src="js/jquery-1.11.2.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>
